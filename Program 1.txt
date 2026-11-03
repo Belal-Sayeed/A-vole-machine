@@ -1,0 +1,11 @@
+; Program 1: Load, add, and display on screen
+2008 ; Load immediate value 08 into register 0
+2104 ; Load immediate value 04 into register 1
+5201 ; Add registers 0 and 1 (2's complement), put result in register 2
+4230 ; Move the bit pattern in register 2 to register 3
+240A ; Load immediate value A into register 4
+7524 ; OR the contents of registers 2 and 4, place result in register 5
+35FF ; Store register 5 into location FF (writing to the screen)
+2602 ; Load immediate value 02 into register 6
+A601 ; Rotate the bit pattern in register 6 one bit to the right 1 time
+C000 ; Halt execution

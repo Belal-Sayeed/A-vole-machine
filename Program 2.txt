@@ -1,0 +1,12 @@
+; Program 2: Bitwise operations and conditional flow
+2000 ; Load immediate value 00 into register 0
+210F ; Load immediate value 0F into register 1
+2233 ; Load immediate value 33 into register 2
+8312 ; AND the bit patterns in registers 1 and 2, place result in register 3
+9412 ; EXCLUSIVE OR the bit patterns in registers 1 and 2, place result in register 4
+4041 ; Move the bit pattern in register 4 to register 0
+A202 ; Rotate the bit pattern in register 2 one bit to the right 2 times
+B410 ; Jump to memory address 10 if register 4 equals register 0
+25FF ; Load immediate value FF into register 5
+35FF ; Store register 5 into location FF (screen output)
+C000 ; Halt execution
