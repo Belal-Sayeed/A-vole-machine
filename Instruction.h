@@ -1,12 +1,17 @@
 #pragma once
 #include <cstdint>
-using namespace std;
+
 class Instruction
 {
     public:
-    void ClearInstruction();
-    void SetInstruction(uint16_t value);
-    uint4_t Get_Opcode() const;
+    Instruction(uint16_t order);
+    uint8_t getOpcode() const;
+    uint8_t getR() const;
+    uint8_t getS() const;
+    uint8_t getT() const;
+    uint8_t getXY() const;
+    uint8_t getX() const;
+    bool hasvalidFormat() const;
 
     private:
     uint16_t instruction;
