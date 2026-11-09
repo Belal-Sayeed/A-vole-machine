@@ -1,6 +1,6 @@
 #include "CPU.h"
 
-CPU::CPU()
+CPU::CPU(Memory& mem, Screen& scr) : memory(mem), screen(scr)
 {
     clearMachine();
     reset(0x00);
@@ -155,14 +155,4 @@ void CPU::execute(const Instruction& instruction)
             errorReason = "Normal HALT execution.";
             break;
     }
-}
-
-Memory& CPU::getMemory()
-{
-    return memory;
-}
-
-Screen& CPU::getScreen()
-{
-    return screen;
 }

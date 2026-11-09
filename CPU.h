@@ -16,11 +16,11 @@ private:
     std::string errorReason;
     Register registers;
     ALU alu;
-    Memory memory;
-    Screen screen;
+    Memory& memory;
+    Screen& screen;
 
 public:
-    CPU();
+    CPU(Memory& mem, Screen& scr);
     void reset(uint8_t startAddress);
     void clearMachine();
     bool step();
@@ -32,7 +32,4 @@ public:
     void setRegister(int index, uint8_t value);
     uint16_t fetch();
     void execute(const Instruction& instruction);
-
-    Memory& getMemory();
-    Screen& getScreen();
 };

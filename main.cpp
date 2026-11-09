@@ -1,27 +1,10 @@
 #include <iostream>
-#include "memory.h"
+#include "CPU.h"
+#include "Memory.h"
+#include "Screen.h"
 
 using namespace std;
 
 int main() {
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
