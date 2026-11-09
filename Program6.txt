@@ -1,0 +1,13 @@
+; ---------------------------------------------
+; Vole Machine Program 6
+; Purpose: Test chained arithmetic and bit rotation
+; ---------------------------------------------
+
+2003    ; Load immediate value 03 into register 0
+2105    ; Load immediate value 05 into register 1
+5201    ; Add registers 0 and 1, put result in register 2
+230F    ; Load immediate value 0F into register 3
+7423    ; OR registers 2 and 3, place result in register 4
+A401    ; Rotate register 4 right 1 time
+3FF4    ; Store register 4 to location FF (screen output)
+C000    ; Halt execution

@@ -1,0 +1,14 @@
+; ---------------------------------------------
+; Vole Machine Program 10
+; Purpose: Multi-register arithmetic & logic stress test
+; ---------------------------------------------
+
+2001    ; Load immediate 01 into register 0
+2102    ; Load immediate 02 into register 1
+2203    ; Load immediate 03 into register 2
+2304    ; Load immediate 04 into register 3
+5401    ; Add registers 0 and 1 -> place in register 4
+8542    ; AND registers 4 and 2 -> place in register 5
+7653    ; OR registers 5 and 3 -> place in register 6
+3FF6    ; Store register 6 to location FF (screen output)
+C000    ; Halt execution

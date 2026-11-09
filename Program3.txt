@@ -1,0 +1,11 @@
+; ---------------------------------------------
+; Vole Machine Program 3
+; Purpose: Test floating-point addition (Opcode 6)
+; ---------------------------------------------
+
+200F ; Load immediate value 0F into register 0 (stores memory address 0F)
+110E ; Load value from memory address 0E into register 1
+120F ; Load value from memory address 0F into register 2
+6312 ; Floating-point add registers 1 and 2, put result in register 3
+3FF3 ; Store register 3 to location FF (screen output)
+C000 ; Halt execution

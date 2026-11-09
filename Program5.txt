@@ -1,0 +1,12 @@
+; ---------------------------------------------
+; Vole Machine Program 5
+; Purpose: Test Memory Load/Store and XOR logic
+; ---------------------------------------------
+
+200A    ; Load immediate value A into register 0
+3010    ; Store register 0 into memory address 10
+1110    ; Load value from memory address 10 into register 1
+220F    ; Load immediate value 0F into register 2
+9312    ; XOR registers 1 and 2, place result in register 3
+3FF3    ; Store register 3 to location FF (screen output)
+C000    ; Halt execution

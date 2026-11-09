@@ -1,0 +1,10 @@
+; ---------------------------------------------
+; Vole Machine Program 9
+; Purpose: Test two's complement integer addition (Opcode 5)
+; ---------------------------------------------
+
+200F    ; Load immediate value 0F into register 0
+2101    ; Load immediate value 01 into register 1
+5201    ; Add registers 0 and 1 as integers, put result in register 2
+3FF2    ; Store register 2 to location FF (screen output)
+C000    ; Halt execution

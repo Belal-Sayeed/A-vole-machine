@@ -1,0 +1,12 @@
+; ---------------------------------------------
+; Vole Machine Program 7
+; Purpose: Test conditional jump fall-through (Not Taken)
+; ---------------------------------------------
+
+2005    ; Load immediate value 05 into register 0
+2107    ; Load immediate value 07 into register 1 (R0 != R1)
+B10A    ; Jump to address 0A if register 1 equals register 0 (Condition FALSE -> Falls through)
+22AA    ; (Should execute) Load immediate value AA into register 2
+C000    ; Halt execution
+22FF    ; (Target address 0A - skipped) Load FF into register 2
+C000    ; Halt execution

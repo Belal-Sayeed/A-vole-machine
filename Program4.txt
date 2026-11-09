@@ -1,0 +1,12 @@
+; ---------------------------------------------
+; Vole Machine Program 4
+; Purpose: Test conditional jump / branch (Opcode B)
+; ---------------------------------------------
+
+2005    ; Load immediate value 05 into register 0
+2105    ; Load immediate value 05 into register 1
+B410    ; Jump to memory address 10 if register 4 equals register 0
+2201    ; (Skipped if jump triggers) Load 01 into register 2
+C000    ; Halt execution (if jump doesn't trigger)
+22FF    ; (Target address 10) Load FF into register 2
+C000    ; Halt execution (after jump triggers)

@@ -1,25 +1,20 @@
 #include "ProgramLoader.h"
-#include "Instruction.h"
 #include <fstream>
 #include <sstream>
+#include <cctype>
 
 using namespace std;
 
-ProgramLoader::ProgramLoader()
+ProgramLoader::ProgramLoader() : lastError("")
 {
-    lastError = "";
 }
 
 bool ProgramLoader::load(const string& filename, uint8_t startAddress, Memory& memory)
 {
+    lastError = "";
     ifstream file(filename);
     if (!file.is_open()) {
         lastError = "Could not open file: " + filename;
-        return false;
-    }
-
-    if (!isValidStartAddress(startAddress)) {
-        lastError = "Invalid start address.";
         return false;
     }
 
@@ -27,49 +22,41 @@ bool ProgramLoader::load(const string& filename, uint8_t startAddress, Memory& m
     uint8_t currentAddress = startAddress;
 
     while (getline(file, line)) {
-        if (line.empty() || line[0] == '#') continue;
+        size_t start = line.find_first_not_of(" \t\r\n");
+        if (start == string::npos) {
+            continue;
+        }
+        
+        if (line[start] == ';') {
+            continue;
+        }
 
-        uint16_t rawInstruction = parseInstructionLine(line);
-        if (!validateProgramInstruction(rawInstruction)) {
-            lastError = "Invalid instruction or format in line: " + line;
+        string instStr = "";
+        for (size_t i = start; i < line.length() && !isspace(line[i]); i++) {
+            instStr += line[i];
+        }
+
+        if (instStr.length() != 4) {
+            lastError = "Invalid instruction format: " + instStr;
             return false;
         }
 
-        if (currentAddress > 0xFE) {
-            lastError = "Program exceeds memory bounds.";
+        uint32_t fullInst = stoi(instStr, nullptr, 16);
+        uint8_t byte1 = (fullInst >> 8) & 0xFF;
+        uint8_t byte2 = fullInst & 0xFF;
+
+        if (currentAddress + 1 >= 256) {
+            lastError = "Program exceeds memory size limit.";
             return false;
         }
 
-        uint8_t highByte = (rawInstruction >> 8) & 0xFF;
-        uint8_t lowByte = rawInstruction & 0xFF;
-
-        memory.SetMemory(currentAddress, highByte);
-        memory.SetMemory(currentAddress + 1, lowByte);
-
+        memory.SetMemory(currentAddress, byte1);
+        memory.SetMemory(currentAddress + 1, byte2);
         currentAddress += 2;
     }
 
     file.close();
     return true;
-}
-
-bool ProgramLoader::isValidStartAddress(uint8_t address) const
-{
-    return (address % 2 == 0) && (address <= 0xFE);
-}
-
-uint16_t ProgramLoader::parseInstructionLine(const string& line) const
-{
-    stringstream ss(line);
-    uint32_t val;
-    ss >> hex >> val;
-    return static_cast<uint16_t>(val);
-}
-
-bool ProgramLoader::validateProgramInstruction(uint16_t raw) const
-{
-    Instruction instr(raw);
-    return instr.hasvalidFormat();
 }
 
 string ProgramLoader::getLastError() const

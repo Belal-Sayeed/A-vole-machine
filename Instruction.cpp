@@ -1,8 +1,8 @@
 #include "Instruction.h"
 
-Instruction::Instruction(uint16_t order) 
+Instruction::Instruction(uint16_t order)
 {
-        instruction = order;
+    instruction = order;
 }
 
 uint8_t Instruction::getOpcode() const
@@ -43,25 +43,16 @@ bool Instruction::hasvalidFormat() const
         case 0x1:
         case 0x2:
         case 0x3:
-        case 0xB:
-            return true;
-
         case 0x4:
-            return (getR() == 0);
-
         case 0x5:
         case 0x6:
         case 0x7:
         case 0x8:
         case 0x9:
-            return true;
-
         case 0xA:
-            return (getS() == 0);
-
+        case 0xB:
         case 0xC:
-            return ((instruction & 0x0FFF) == 0);
-
+            return true;
         default:
             return false;
     }

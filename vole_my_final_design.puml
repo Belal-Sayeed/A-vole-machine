@@ -1,0 +1,139 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+package "Presentation" {
+  class ConsoleUI <<boundary>> {
+    + run(): void
+    - showMenu(): void
+    - loadProgram(): void
+    - editRegister(): void
+    - editMemory(): void
+    - runContinuously(): void
+    - runOneStep(): void
+    - displayMachineState(): void
+    - waitForEnter(): void
+  }
+}
+
+package "Application Control" {
+  class VoleSimulator <<control>> {
+    - cpu: CPU
+    - memory: Memory
+    - screen: Screen
+    - loader: ProgramLoader
+    + loadProgram(fileName: string, startAddress: uint8_t): bool
+    + runAll(): void
+    + step(): bool
+    + editRegister(index: int, value: uint8_t): void
+    + editMemory(address: uint8_t, value: uint8_t): void
+    + isHalted(): bool
+    + getLastError(): string
+  }
+
+  class ProgramLoader <<control>> {
+    + load(fileName: string, startAddress: uint8_t, memory: Memory): bool
+    - isValidStartAddress(address: uint8_t): bool
+    - parseInstructionLine(line: string): uint16_t
+    - validateProgramInstruction(raw: uint16_t): bool
+    - getLastError(): string
+  }
+}
+
+package "Machine Domain" {
+  class CPU {
+    - pc: uint8_t
+    - ir: uint16_t
+    - halted: bool
+    - registers: RegisterFile
+    - alu: ALU
+    - memory: Memory
+    - screen: Screen
+    + reset(startAddress: uint8_t): void
+    + step(): bool
+    + isHalted(): bool
+    + getPC(): uint8_t
+    + getIR(): uint16_t
+    + getRegister(index: int): uint8_t
+    + setRegister(index: int, value: uint8_t): void
+    - fetch(): uint16_t
+    - execute(instruction: Instruction): void
+  }
+
+  class Instruction {
+    - raw: uint16_t
+    + getOpcode(): uint8_t
+    + getR(): uint8_t
+    + getS(): uint8_t
+    + getT(): uint8_t
+    + getXY(): uint8_t
+    + getX(): uint8_t
+    + hasValidFormat(): bool
+  }
+
+  class RegisterFile {
+    - registers: uint8_t[16]
+    + get(index: int): uint8_t
+    + set(index: int, value: uint8_t): void
+    + clear(): void
+  }
+
+  class Memory {
+    - cells: uint8_t[256]
+    + read(address: uint8_t): uint8_t
+    + write(address: uint8_t, value: uint8_t): void
+    + clear(): void
+    + displayMatrix(): string
+  }
+
+  class ALU {
+    + addTwosComplement(a: uint8_t, b: uint8_t): uint8_t
+    + addFloat(a: uint8_t, b: uint8_t): uint8_t
+    + bitwiseOr(a: uint8_t, b: uint8_t): uint8_t
+    + bitwiseAnd(a: uint8_t, b: uint8_t): uint8_t
+    + bitwiseXor(a: uint8_t, b: uint8_t): uint8_t
+    + rotateRight(value: uint8_t, times: int): uint8_t
+  }
+
+  class Screen {
+    - output: string
+    + write(value: uint8_t): void
+    + getOutput(): string
+    + clear(): void
+  }
+}
+
+ConsoleUI --> VoleSimulator : user commands
+VoleSimulator *-- CPU
+VoleSimulator *-- Memory
+VoleSimulator *-- Screen
+VoleSimulator *-- ProgramLoader
+CPU *-- RegisterFile
+CPU *-- ALU
+CPU --> Memory : fetch/read/write
+CPU --> Screen : store to FF
+CPU ..> Instruction : decodes
+ProgramLoader ..> Memory : loads bytes
+ProgramLoader ..> Instruction : validates format
+
+note right of Memory
+  256 byte-addressable cells (00..FF).
+  Instructions occupy two consecutive bytes.
+  Program start must be even and < FF.
+end note
+
+note right of Instruction
+  Supported opcodes: 1..9, A, B, C.
+  Validate each opcode's operand pattern:
+  RXY, 0RS, RST, R0X, or 000.
+  C is valid only as C000.
+end note
+
+note bottom of Screen
+  A STORE instruction with address FF
+  sends the register value to the screen
+  rather than treating FF as ordinary output memory.
+end note
+
+@enduml

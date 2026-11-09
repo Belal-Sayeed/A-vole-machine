@@ -1,0 +1,11 @@
+; ---------------------------------------------
+; Vole Machine Program 8
+; Purpose: Test register-to-register move and rotation
+; ---------------------------------------------
+
+20F0    ; Load immediate value F0 into register 0
+4001    ; Move/copy contents of register 0 to register 1
+4012    ; Move/copy contents of register 1 to register 2
+A204    ; Rotate register 2 right by 4 bits
+3FF2    ; Store register 2 to location FF (screen output)
+C000    ; Halt execution

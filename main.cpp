@@ -1,10 +1,9 @@
-#include <iostream>
-#include "CPU.h"
-#include "Memory.h"
-#include "Screen.h"
+#include "ConsoleUI.h"
 
 using namespace std;
 
 int main() {
-    
+    ConsoleUI ui;
+    ui.run();
+    return 0;
 }
